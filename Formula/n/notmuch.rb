@@ -35,7 +35,7 @@ class Notmuch < Formula
   depends_on "cffi"
   depends_on "glib"
   depends_on "gmime"
-  depends_on "python@3.14"
+  depends_on "python@3.15"
   depends_on "sfsexp"
   depends_on "talloc"
   depends_on "xapian"
