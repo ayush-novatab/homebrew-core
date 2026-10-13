@@ -1,8 +1,8 @@
 class ArcaneCli < Formula
   desc "Command-line client for the Arcane Docker management platform"
   homepage "https://getarcane.app"
-  url "https://github.com/getarcaneapp/arcane/archive/refs/tags/v2.15.1.tar.gz"
-  sha256 "cc99866518c8e66481164d9d0de3c8b3149ce349c31114d2fc2981af6ac16fd1"
+  url "https://github.com/getarcaneapp/arcane/archive/refs/tags/v2.16.0.tar.gz"
+  sha256 "3a5ed5953472d8c313a0ea80fa9ae27f39135e5520b8bff28e90371a3ece7a6b"
   license "BSD-3-Clause"
   head "https://github.com/getarcaneapp/arcane.git", branch: "main"
 
@@ -16,6 +16,12 @@ class ArcaneCli < Formula
 
   depends_on "go" => :build
 
+  # Disable self-update
+  patch do
+    file "Patches/arcane-cli/disable-self-update.patch"
+    type :unofficial
+  end
+
   deny_network_access!
 
   def fetch
@@ -26,9 +32,6 @@ class ArcaneCli < Formula
 
   def install
     ENV["GOWORK"] = "off"
-
-    # Homebrew manages upgrades, so drop the self-update command
-    inreplace "cli/pkg/root.go", "rootCmd.AddCommand(selfupdate.Cmd)", "_ = selfupdate.Cmd"
 
     cd "cli" do
       ldflags = %W[
